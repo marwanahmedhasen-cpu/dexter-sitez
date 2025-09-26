@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dexter Morgan</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: black;
+      color: red;
+      font-family: "Arial", sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 10px red;
+    }
+
+    .imageWrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .imageWrapper img {
+      max-width: 250px; /* smaller image */
+      border-radius: 10px;
+      box-shadow: 0 0 25px red;
+      display: none;
+    }
+
+    .overlayText {
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2em;
+      font-weight: bold;
+      color: crimson;
+      text-shadow: 2px 2px 8px black, 0 0 15px red;
+      display: none;
+      animation: drip 1.5s infinite alternate;
+    }
+
+    #introImg { display: block; }
+
+    #description {
+      margin-top: 15px;
+      font-size: 1em;
+      max-width: 500px;
+      line-height: 1.4;
+      color: #ff0000;
+      text-shadow: 2px 2px 8px #800000, 0 0 20px red;
+      animation: drip 1.5s infinite alternate;
+    }
+
+    @keyframes drip {
+      0% { text-shadow: 2px 2px 8px #800000, 0 0 20px red; }
+      100% { text-shadow: 2px 8px 20px #b30000, 0 0 30px crimson; }
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 18px;
+      font-size: 1.1em;
+      font-weight: bold;
+      background: darkred;
+      color: white;
+      border: 2px solid red;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s;
+      z-index: 9999; /* always above everything */
+      display: block;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: crimson;
+    }
+
+    .glitch {
+      animation: glitch 0.3s infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(2px, 2px); filter: hue-rotate(20deg); }
+      25% { transform: translate(-2px, -2px); filter: hue-rotate(-20deg); }
+      50% { transform: translate(3px, -1px); filter: contrast(200%); }
+      75% { transform: translate(-3px, 1px); filter: brightness(200%); }
+      100% { transform: translate(0, 0); filter: none; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Dexter Morgan</h1>
+
+  <div class="imageWrapper">
+    <!-- Dexter -->
+    <img id="introImg" src="DexterMorgan1.webp" alt="Dexter Morgan">
+    <div id="dexterText" class="overlayText"></div>
+
+    <!-- Trinity -->
+    <img id="trinityImg" src="Arthur_Mitchell_98.webp" alt="Trinity Killer">
+    <div id="trinityText" class="overlayText">Arthur Mitchell</div>
+  </div>
+
+  <p id="description">
+    Dexter Morgan: a forensic blood spatter analyst for Miami Metro by day, and a vigilante serial killer by night. 
+    He follows a strict code to only target murderers who escaped justice.
+  </p>
+
+  <!-- The button -->
+  <button id="switchBtn">Tonight is the Night</button>
+
+  <!-- Sounds -->
+  <audio id="sound" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+  <audio id="glitchSound" src="https://www.soundjay.com/misc/sounds/fail-buzzer-01.mp3"></audio>
+
+  <script>
+    const btn = document.getElementById("switchBtn");
+    const introImg = document.getElementById("introImg");
+    const trinityImg = document.getElementById("trinityImg");
+    const description = document.getElementById("description");
+    const dexterText = document.getElementById("dexterText");
+    const trinityText = document.getElementById("trinityText");
+    const sound = document.getElementById("sound");
+    const glitchSound = document.getElementById("glitchSound");
+
+    function playSequence() {
+      // Show Trinity
+      introImg.style.display = "none";
+      dexterText.style.display = "none";
+      trinityImg.style.display = "block";
+      trinityText.style.display = "block";
+      description.innerHTML =
+        "Arthur Mitchell, known as the Trinity Killer: a seemingly ordinary family man who hides a terrifying ritual of murders, each staged around the theme of the Holy Trinity.";
+      sound.play();
+
+      // After 5s → glitch
+      setTimeout(() => {
+        trinityImg.classList.add("glitch");
+        glitchSound.play();
+      }, 5000);
+
+      // After 8s → back to Dexter with Bay Harbor Butcher
+      setTimeout(() => {
+        trinityImg.style.display = "none";
+        trinityText.style.display = "none";
+        trinityImg.classList.remove("glitch");
+
+        introImg.style.display = "block";
+        dexterText.style.display = "block";
+        dexterText.innerText = "The Bay Harbor Butcher";
+        description.innerHTML =
+          "Dexter’s dark alter ego revealed: The Bay Harbor Butcher, the feared serial killer of Miami whose victims were never missed — because they were killers themselves.";
+      }, 8000);
+    }
+
+    btn.addEventListener("click", playSequence);
+  </script>
+</body>
+</html>
